@@ -1,0 +1,13 @@
+{
+  "item.runic_etchings.armor_rune": "Rune",
+  "item.runic_etchings.tool_rune": "Rune",
+  "item.runic_etchings.weapon_rune": "Rune",
+  "item.runic_etchings.ranged_weapon_rune": "Rune",
+
+  "tooltip.runic_etchings.rune_type": "Enchantment Rune",
+  "tooltip.runic_etchings.applies_to.armor": "Armor",
+  "tooltip.runic_etchings.applies_to.weapons": "Weapons",
+  "tooltip.runic_etchings.applies_to.ranged": "Ranged Weapons",
+  "tooltip.runic_etchings.applies_to.tools": "Tools",
+  "tooltip.runic_etchings.ingredients.rune": "Ingots & Crystals"
+}

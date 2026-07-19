@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.teamconcord.runic_etchings.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "RESmithingMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,92 @@
+plugins {
+    id "java-library"
+    id "idea"
+    id "maven-publish"
+    id 'net.neoforged.moddev' version '2.0.115'
+}
+
+version = "${project.minecraft_version}-${project.mod_version}"
+group = project.group
+
+base {
+    archivesName = project.mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neoforge
+
+    runs {
+        configureEach {
+            systemProperty "forge.logging.markers", "REGISTRIES"
+            systemProperty "forge.logging.console.level", "debug"
+        }
+        client { client() }
+        server { server() }
+        data {
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+    }
+
+    mods {
+        "${project.mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+
+    parchment {
+        minecraftVersion = project.minecraft_version
+        mappingsVersion = project.parchment
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources", "src/generated/resources"]
+        }
+    }
+}
+
+repositories {
+    maven { url = "https://maven.teamabnormals.com/" }
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.teamabnormals:blueprint:${project.minecraft_version}-${project.blueprint_version}")
+    compileOnly 'org.spongepowered:mixin:0.8.7:processor'
+}
+
+tasks.withType(ProcessResources).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    var replaceProperties = [
+            mod_version: project.mod_version,
+            minecraft_version: project.minecraft_version,
+            neoforge: project.neoforge,
+            blueprint_version: project.blueprint_version,
+            mod_id: project.mod_id,
+            mod_name: project.mod_name,
+            mod_license: project.mod_license
+    ]
+    inputs.properties replaceProperties
+    filesMatching(["META-INF/neoforge.mods.toml"]) {
+        expand replaceProperties
+    }
+}
+
+tasks.named("jar", Jar).configure {
+    manifest {
+        attributes([
+                "Specification-Title"     : project.mod_name,
+                "Specification-Vendor"    : "Team Concord",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.mod_name,
+                "Implementation-Version"  : project.mod_version,
+                "Implementation-Vendor"   : "Team Concord",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
